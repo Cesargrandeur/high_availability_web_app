@@ -18,7 +18,7 @@ Resources:
           !Sub "${EnvironmentName}-PUB1-SN"
       SecurityGroupIds: 
         - !GetAtt WebServerSecGroup.GroupId
-      KeyName: highava
+      
   RoleForS3Access: 
     Type: "AWS::IAM::Role"
     Properties:
@@ -98,12 +98,13 @@ Resources:
     Properties:
       UserData:
         Fn::Base64: !Sub |
-         #!/bin/bash
-         apt-get update -y
-         apt-get install apache2 -y
-         systemctl start apache2.service
-         cd /var/www/html
-         echo "Udacity Demo Web Server Up and Running!" > index.html        
+         #!/bin/bash -xe
+          sudo apt-get update -y
+          sudo apt-get install unzip awscli -y
+          sudo apt-get install apache2 -y
+          sudo systemctl start apache2.service
+          cd /var/www/html
+          rm index.html    
       ImageId: ami-00ddb0e5626798373
       SecurityGroups:
       - Ref: WebServerSecGroup
